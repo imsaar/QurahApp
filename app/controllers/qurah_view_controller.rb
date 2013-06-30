@@ -21,21 +21,22 @@ class QurahViewController < UIViewController
   end
 
   def doIt
+    @label.text += "\n Let's Go!"
   end
 
   def makeIntroLabel
     label = UILabel.alloc.initWithFrame([[10, 200], [300, 120]])
     label.backgroundColor = UIColor.clearColor
-    label.numberOfLines = 2
+    label.numberOfLines = 3
     label.text = "Qurah: Pick the Winner"
-    label.font = UIFont.fontWithName(fontName, size:30)
+    label.font = UIFont.fontWithName(fontName, size:20)
     label.textColor = UIColor.blackColor
     label.textAlignment = UITextAlignmentCenter
     label
   end
 
   def fontName
-    "Helvetica"
+    "Zapfino"
   end
 
 end
