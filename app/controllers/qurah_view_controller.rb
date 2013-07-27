@@ -11,6 +11,20 @@ class QurahViewController < UIViewController
     UIInterfaceOrientationMaskPortrait
   end
 
+  def viewWillAppear(animated)
+    super
+    becomeFirstResponder
+  end
+
+  def viewWillDisappear(animated)
+    super
+    resignFirstResponder
+  end
+
+  def canBecomeFirstResponder
+    true
+  end
+
   def viewDidLoad
     super
     label = makeIntroLabel
@@ -64,6 +78,41 @@ class QurahViewController < UIViewController
     
     frame = [[button_x, button_y], [button_width, button_height]]
     self.view.addSubview button("Add", "addItem", frame)
+    @listView = self.view
+  end
+
+  def motionEnded(motion, withEvent:event)
+    if event.subtype == UIEventSubtypeMotionShake
+      self.view = UIImageView.alloc.initWithImage(UIImage.imageNamed("background"))
+      view.userInteractionEnabled = true
+
+      width = 200
+      height = 70
+      x = 40
+      y = 200
+
+      label = UILabel.alloc.initWithFrame([[x, y], [width, height]])
+      label.backgroundColor = UIColor.clearColor
+      label.numberOfLines = 1
+      label.font = UIFont.fontWithName(fontName, size:30)
+      label.textColor = UIColor.redColor
+      label.textAlignment = UITextAlignmentCenter
+      label.text = @items.sample
+      self.view.addSubview(label)
+
+      button_x = 20
+      button_y = 400
+      button_width = 100
+      button_height = 40
+
+      frame = [[button_x, button_y], [button_width, button_height]]
+      self.view.addSubview button("Back To List", "backToListView", frame)
+    end
+    super
+  end
+
+  def backToListView
+    self.view = @listView
   end
 
   def addItem
