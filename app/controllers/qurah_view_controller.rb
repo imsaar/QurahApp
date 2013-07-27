@@ -68,6 +68,7 @@ class QurahViewController < UIViewController
     paddingView = UIView.alloc.initWithFrame([[0, 0], [5, 20]])
     @inputTextField.leftView = paddingView
     @inputTextField.leftViewMode = UITextFieldViewModeAlways
+    @inputTextField.delegate = self
     view.addSubview(@inputTextField)
     
     # ======== Add Button ============ #
@@ -79,6 +80,11 @@ class QurahViewController < UIViewController
     frame = [[button_x, button_y], [button_width, button_height]]
     self.view.addSubview button("Add", "addItem", frame)
     @listView = self.view
+  end
+
+  def textFieldShouldReturn(textField)
+    addItem
+    true
   end
 
   def motionEnded(motion, withEvent:event)
