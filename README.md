@@ -1,4 +1,4 @@
 QurahApp
 ========
 
-Rubymotion add to pick random winner
+Rubymotion app to pick random winner

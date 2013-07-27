@@ -20,8 +20,15 @@ class QurahViewController < UIViewController
     view.addGestureRecognizer(recognizer)
   end
 
+  def switchToViewMode
+    @inputTextField.resignFirstResponder
+  end
+
   def doIt
     self.view = UIImageView.alloc.initWithImage(UIImage.imageNamed("background"))
+    recognizer = UITapGestureRecognizer.alloc.initWithTarget(self, action:'switchToViewMode')
+    view.addGestureRecognizer(recognizer)
+
     view.userInteractionEnabled = true
     @items = []
     #                  ________              _____
@@ -60,17 +67,14 @@ class QurahViewController < UIViewController
   end
 
   def addItem
-    # TODO: Next
-    # Keep track of y value as @current_y
-    # Add a label with text of the textField
-    # Containing view has to be scrollable
-    # Clear textField after adding
     @items.push(@inputTextField.text)
     displayItem(@items[-1], @items.size)
     @inputTextField.text = ""
   end
 
   def displayItem(item, position)
+    # TODO : Create and use a TextView to display this list
+    # so that it is scrollable
     width = 200
     height = 40
     x = 25
