@@ -11,6 +11,16 @@ class QurahViewController < UIViewController
     UIInterfaceOrientationMaskPortrait
   end
 
+  def viewDidLoad
+    super
+    label = makeIntroLabel
+    view.addSubview(label)
+    view.userInteractionEnabled = true
+    recognizer = UITapGestureRecognizer.alloc.initWithTarget(self, action:'doIt')
+    view.addGestureRecognizer(recognizer)
+  end
+
+  # TODO: Remove after refactor
   def viewWillAppear(animated)
     super
     becomeFirstResponder
@@ -24,35 +34,36 @@ class QurahViewController < UIViewController
   def canBecomeFirstResponder
     true
   end
-
-  def viewDidLoad
-    super
-    label = makeIntroLabel
-    view.addSubview(label)
-    view.userInteractionEnabled = true
-    recognizer = UITapGestureRecognizer.alloc.initWithTarget(self, action:'doIt')
-    view.addGestureRecognizer(recognizer)
-  end
+  # END OF TODO: Remove after refactor
 
   def switchToViewMode
     @inputTextField.resignFirstResponder
   end
 
   def doIt
-    self.view = UIImageView.alloc.initWithImage(UIImage.imageNamed("background"))
+    self.view = EntryView.new
     recognizer = UITapGestureRecognizer.alloc.initWithTarget(self, action:'switchToViewMode')
     view.addGestureRecognizer(recognizer)
 
     view.userInteractionEnabled = true
     @items = []
-    #                  ________              _____
-    # text box to add |        | and submit | Add |
-    #                  --------              -----
-    # *. Ali
-    # *. Hyder
-    # *. Zeeshan
+
+    createInputField
+    createAddButton
+  end
+
+  def createAddButton
+    button_x = 250
+    button_y = 50
+    button_width = 60
+    button_height = 40
     
-    # ======== Text Field ============ #
+    frame = [[button_x, button_y], [button_width, button_height]]
+    self.view.addSubview button("Add", "addItem", frame)
+    @listView = self.view
+  end
+
+  def createInputField
     x = 25
     y = 50
     width = 200
@@ -62,7 +73,7 @@ class QurahViewController < UIViewController
     @inputTextField.layer.borderWidth = 1.0
     @inputTextField.clearButtonMode = UITextFieldViewModeWhileEditing
     @inputTextField.textAlignment = NSTextAlignmentLeft
-    @inputTextField.font = UIFont.fontWithName(fontName, size:15)
+    @inputTextField.font = UIFont.fontWithName(fontName, size:25)
     @inputTextField.placeholder = "Add New Entry"
     @inputTextField.enabled = true
     paddingView = UIView.alloc.initWithFrame([[0, 0], [5, 20]])
@@ -70,16 +81,6 @@ class QurahViewController < UIViewController
     @inputTextField.leftViewMode = UITextFieldViewModeAlways
     @inputTextField.delegate = self
     view.addSubview(@inputTextField)
-    
-    # ======== Add Button ============ #
-    button_x = 250
-    button_y = 50
-    button_width = 60
-    button_height = 40
-    
-    frame = [[button_x, button_y], [button_width, button_height]]
-    self.view.addSubview button("Add", "addItem", frame)
-    @listView = self.view
   end
 
   def textFieldShouldReturn(textField)
@@ -122,6 +123,7 @@ class QurahViewController < UIViewController
   end
 
   def addItem
+    return if @inputTextField.text.strip == ""
     @items.push(@inputTextField.text)
     displayItem(@items[-1], @items.size)
     @inputTextField.text = ""
@@ -138,7 +140,7 @@ class QurahViewController < UIViewController
     label = UILabel.alloc.initWithFrame([[x, y], [width, height]])
     label.backgroundColor = UIColor.clearColor
     label.numberOfLines = 1
-    label.font = UIFont.fontWithName(fontName, size:15)
+    label.font = UIFont.fontWithName(fontName, size:25)
     label.textColor = UIColor.blackColor
     label.textAlignment = UITextAlignmentLeft
     label.text = "#{position}. #{item}"
@@ -150,7 +152,7 @@ class QurahViewController < UIViewController
     label.backgroundColor = UIColor.clearColor
     label.numberOfLines = 3
     label.text = "Qurah: Pick the Winner"
-    label.font = UIFont.fontWithName(fontName, size:20)
+    label.font = UIFont.fontWithName(fontName, size:30)
     label.textColor = UIColor.blackColor
     label.textAlignment = UITextAlignmentCenter
     label
@@ -166,7 +168,7 @@ class QurahViewController < UIViewController
   end
 
   def fontName
-    "Zapfino"
+    "MarkerFelt-Wide"
   end
 
 end
