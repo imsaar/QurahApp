@@ -49,28 +49,16 @@ class QurahViewController < UIViewController
     @items = []
 
     createInputField
-    createAddButton
-  end
-
-  def createAddButton
-    button_x = 250
-    button_y = 50
-    button_width = 60
-    button_height = 40
-    
-    frame = [[button_x, button_y], [button_width, button_height]]
-    self.view.addSubview button("Add", "addItem", frame)
-    @listView = self.view
   end
 
   def createInputField
     x = 25
     y = 50
-    width = 200
+    width = 270
     height = 40
 
     @inputTextField = UITextField.alloc.initWithFrame(CGRectMake(x,y,width,height))
-    @inputTextField.layer.borderWidth = 1.0
+    #@inputTextField.layer.borderWidth = 1.0
     @inputTextField.clearButtonMode = UITextFieldViewModeWhileEditing
     @inputTextField.textAlignment = NSTextAlignmentLeft
     @inputTextField.font = UIFont.fontWithName(fontName, size:25)
@@ -90,6 +78,7 @@ class QurahViewController < UIViewController
 
   def motionEnded(motion, withEvent:event)
     if event.subtype == UIEventSubtypeMotionShake
+      @listView = self.view
       self.view = UIImageView.alloc.initWithImage(UIImage.imageNamed("background"))
       view.userInteractionEnabled = true
 
