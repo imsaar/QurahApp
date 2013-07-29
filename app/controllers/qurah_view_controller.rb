@@ -49,6 +49,7 @@ class QurahViewController < UIViewController
     @items = []
 
     createInputField
+    @listView = self.view
   end
 
   def createInputField
@@ -78,7 +79,6 @@ class QurahViewController < UIViewController
 
   def motionEnded(motion, withEvent:event)
     if event.subtype == UIEventSubtypeMotionShake
-      @listView = self.view
       self.view = UIImageView.alloc.initWithImage(UIImage.imageNamed("background"))
       view.userInteractionEnabled = true
 
@@ -116,6 +116,7 @@ class QurahViewController < UIViewController
     @items.push(@inputTextField.text)
     displayItem(@items[-1], @items.size)
     @inputTextField.text = ""
+    @listView = self.view
   end
 
   def displayItem(item, position)
